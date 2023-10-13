@@ -40,12 +40,12 @@ sudo rm -rf .neo4j
 ### Useful queries:
 - Get all tables that directly source from a table
 ```cypher
-MATCH (t:Table {name: 'raw_microservices.offers'})<-[r:SOURCES_FROM]-(x:Table) RETURN t, x
+MATCH (t:Table {name: 'table name'})<-[r:SOURCES_FROM]-(x:Table) RETURN t, x
 ```
 
 - Get all column that inherit from a column up to 10 connection levels
 ```cypher
-MATCH (n:Column {name: 'competitors_set.competitors_rank'})-[:SOURCES_FROM*1..10]->(m:Column)
+MATCH (n:Column {name: 'column name'})-[:SOURCES_FROM*1..10]->(m:Column)
 RETURN n, m
 ```
 - Get all columns up to 3 levels frm the original column and also all tables in 1 level distant
