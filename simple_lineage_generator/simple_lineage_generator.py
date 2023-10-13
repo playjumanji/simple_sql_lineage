@@ -64,14 +64,14 @@ def gen_table_relations(table_tuples: Set[TableTuple], session: Session) -> None
                 MATCH (
                     s:Schema {{name: '{schema}'}}
                 ),(t:Table {{name: '{table}'}}
-                ) MERGE (t)-[r:IS_IN]->(s)
+                ) MERGE (t)<-[r:IS_IN]-(s)
             """
             session.execute_write(_n4j_run_statement, rel_schema_table_stm)
 
         # Now can Add downstrem realtion between tables
         rel_table_stm = f"""
             MATCH (p:Table {{name: '{entry.parent}'}}), (c:Table {{name: '{entry.child}'}}) 
-            CREATE (c)-[r:SOURCES_FROM]->(p) 
+            CREATE (c)<-[r:SOURCES_FROM]-(p) 
             RETURN r
         """
         session.execute_write(_n4j_run_statement, rel_table_stm)
@@ -96,7 +96,7 @@ def gen_column_relations(column_tuples: Set[ColumnTuple], session: Session) -> N
                     {{name: '{}'}}
                 ),(c:Column 
                     {{name: '{}'}}
-                ) MERGE (c)-[r:HAS_COLUMN]->(t) 
+                ) MERGE (c)<-[r:HAS_COLUMN]-(t) 
             RETURN r
         """
 
@@ -106,7 +106,7 @@ def gen_column_relations(column_tuples: Set[ColumnTuple], session: Session) -> N
                     {{name: '{}'}}
                 ), ( c:Column 
                     {{name: '{}'}}
-                ) MERGE (c)-[r:SOURCES_FROM]->(p)               
+                ) MERGE (c)<-[r:SOURCES_FROM]-(p)               
             RETURN r
         """
 
